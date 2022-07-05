@@ -9,7 +9,7 @@ using Persistence.Employees;
 using Persistence.Products;
 using Persistence.Sales;
 
-namespace Persistence;
+namespace Persistence.Database;
 
 public class DatabaseService : DbContext, IDatabaseService
 {
@@ -21,7 +21,6 @@ public class DatabaseService : DbContext, IDatabaseService
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData";
-        // optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("Api"));
         optionsBuilder.UseSqlServer(connectionString);
     }
 

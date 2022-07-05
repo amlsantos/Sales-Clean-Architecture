@@ -3,7 +3,7 @@ using Domain.Employees;
 using Domain.Products;
 using Domain.Sales;
 
-namespace Persistence;
+namespace Persistence.Database;
 
 public static class DatabaseInitializer
 {
@@ -62,7 +62,7 @@ public static class DatabaseInitializer
             Date = DateTime.Now.Date.AddDays(-3),
             CustomerId = Customers.ElementAt(0).Id,
             EmployeeId = Employees.ElementAt(0).Id,
-            ProductId = Products.ElementAt(0).Id
+            ProductId = Products.ElementAt(0).Id,
         },
         new()
         {

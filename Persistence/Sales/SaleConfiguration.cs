@@ -1,19 +1,34 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using Domain.Sales;
+﻿using Domain.Sales;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Persistence.Database;
 
-namespace Persistance.Sales;
+namespace Persistence.Sales;
 
-public class SaleConfiguration : EntityTypeConfiguration<Sale>
+public class SaleConfiguration : IEntityTypeConfiguration<Sale>
 {
-    public SaleConfiguration()
+    public void Configure(EntityTypeBuilder<Sale> builder)
     {
-        HasKey(p => p.Id);
-        Property(p => p.Date).IsRequired();
+        builder.HasKey(s => s.Id);
         
-        HasRequired(p => p.Customer);
-        HasRequired(p => p.Employee);
-        HasRequired(p => p.Product);
+        builder.Property(s => s.Date).IsRequired();
+        builder.Property(s => s.TotalPrice).IsRequired().HasPrecision(5, 2);
+        builder.Property(s => s.CustomerId).IsRequired();
+        builder.Property(s => s.EmployeeId).IsRequired();
+        builder.Property(s => s.ProductId).IsRequired();
 
-        Property(p => p.TotalPrice).IsRequired().HasPrecision(5, 2);
+        builder.HasOne(s => s.Customer)
+            .WithOne(c => c.Sale)
+            .HasForeignKey<Sale>(s => s.CustomerId);
+        
+        builder.HasOne(s => s.Employee)
+            .WithOne(e => e.Sale)
+            .HasForeignKey<Sale>(e => e.EmployeeId);
+
+        builder.HasOne(s => s.Product)
+            .WithOne(e => e.Sale)
+            .HasForeignKey<Sale>(e => e.ProductId);
+        
+        builder.HasData(DatabaseInitializer.Sales);
     }
 }

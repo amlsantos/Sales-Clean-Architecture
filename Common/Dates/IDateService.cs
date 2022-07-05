@@ -2,5 +2,5 @@
 
 public interface IDateService
 {
-    
+    DateTime GetDate();
 }

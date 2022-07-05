@@ -1,10 +1,8 @@
 ﻿using Application.Interfaces;
-using Application.Sales.Commands.CreateSale;
 using Application.Sales.Commands.CreateSale.Factory;
 using Common.Dates;
-using Domain.Products;
 
-namespace Application.Sales.Commands;
+namespace Application.Sales.Commands.CreateSale;
 
 public class CreateSaleCommand : ICreateSaleCommand
 {
@@ -25,7 +23,7 @@ public class CreateSaleCommand : ICreateSaleCommand
         _inventory = inventory;
     }
 
-    public void Execute(CreateSaleModel model)
+    public async Task Execute(CreateSaleModel model)
     {
         var date = _dateService.GetDate();
 
@@ -42,7 +40,8 @@ public class CreateSaleCommand : ICreateSaleCommand
             quantity);
 
         _database.Sales.Add(sale);
-        _database.Save();
+        await _database.Save();
+        
         _inventory.NotifySaleOcurred(product.Id, quantity);
     }
 }

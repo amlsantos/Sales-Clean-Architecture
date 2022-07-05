@@ -2,5 +2,5 @@
 
 public interface ICreateEmployeeCommand
 {
-    
+    Task Execute(CreateEmployeeModel model);
 }

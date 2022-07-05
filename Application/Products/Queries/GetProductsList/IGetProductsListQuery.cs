@@ -1,4 +1,4 @@
-﻿namespace Application.Products.Queries.GetCustomerList;
+﻿namespace Application.Products.Queries.GetProductsList;
 
 public interface IGetProductsListQuery
 {

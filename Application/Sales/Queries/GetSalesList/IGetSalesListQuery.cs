@@ -1,6 +1,6 @@
 ﻿namespace Application.Sales.Queries.GetSalesList;
 
-public class IGetSalesListQuery
+public interface IGetSalesListQuery
 {
-    
+    List<SalesListItemModel> Execute();
 }

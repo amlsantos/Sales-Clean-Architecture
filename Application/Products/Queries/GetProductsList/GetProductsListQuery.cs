@@ -1,6 +1,6 @@
 ﻿using Application.Interfaces;
 
-namespace Application.Products.Queries.GetCustomerList;
+namespace Application.Products.Queries.GetProductsList;
 
 public class GetProductsListQuery : IGetProductsListQuery
 {

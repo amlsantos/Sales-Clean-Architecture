@@ -2,5 +2,5 @@
 
 public interface ICreateProductCommand
 {
-    
+    Task Execute(CreateProductModel model);
 }

@@ -2,5 +2,5 @@
 
 public interface ICreateCustomerCommand
 {
-    
+    Task Execute(CreateCustomerModel model);
 }

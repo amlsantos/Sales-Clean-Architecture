@@ -2,23 +2,21 @@
 using Domain.Employees;
 using Domain.Products;
 using Domain.Sales;
+using Domain.SalesProducts;
 
 namespace Application.Sales.Commands.CreateSale.Factory;
 
 public class SaleFactory : ISaleFactory
 {
-    public Sale Create(DateTime date, Customer customer, Employee employee, Product product, int quantity)
+    public Sale Create(DateTime date, Customer customer, Employee employee, List<SaleProduct> saleProducts)
     {
         var sale = new Sale
         {
-            Date = date,
+            CreatedDate = date,
             Customer = customer,
             Employee = employee,
-            Product = product,
-            Quantity = quantity
+            SaleProducts = saleProducts
         };
-        
-        sale.UnitPrice = sale.Product.Price;
 
         return sale;
     }

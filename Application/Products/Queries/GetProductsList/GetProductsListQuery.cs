@@ -11,9 +11,9 @@ public class GetProductsListQuery : IGetProductsListQuery
         _database = database;
     }
 
-    public List<ProductModel> Execute()
+    public List<ProductListModel> Execute()
     {
-        var products = _database.Products.Select(p => new ProductModel
+        var products = _database.Products.Select(p => new ProductListModel
             {
                 Id = p.Id, 
                 Name = p.Name,

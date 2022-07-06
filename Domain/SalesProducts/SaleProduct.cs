@@ -2,7 +2,7 @@
 using Domain.Products;
 using Domain.Sales;
 
-namespace Domain.aaaaaaaaa;
+namespace Domain.SalesProducts;
 
 public class SaleProduct : IEntity
 {

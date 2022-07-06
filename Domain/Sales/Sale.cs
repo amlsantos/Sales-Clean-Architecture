@@ -2,53 +2,51 @@
 using Domain.Customers;
 using Domain.Employees;
 using Domain.Products;
+using Domain.SalesProducts;
 
 namespace Domain.Sales;
 
 public class Sale : IEntity
 {
-    private int _quantity;
-    private decimal _totalPrice;
-    private decimal _unitPrice;
-
     public int Id { get; set; }
     public int CustomerId { get; set; }
-    public int EmployeeId { get; set; }
-    public int ProductId { get; set; }
-
     public Customer Customer { get; set; }
+    public int EmployeeId { get; set; }
     public Employee Employee { get; set; }
-    public Product Product { get; set; }
-    public DateTime Date { get; set; }
-
-    public decimal UnitPrice
+    
+    private List<SaleProduct> _saleProducts;
+    public List<SaleProduct> SaleProducts
     {
-        get => _unitPrice;
+        get => _saleProducts;
         set
         {
-            _unitPrice = value;
-            UpdateTotalPrice();
+            _saleProducts = value;
+            
+            CalculateTotalPrice();
+            CalculateTotalItems();
         }
     }
+    
+    public DateTime CreatedDate { get; set; }
 
-    public int Quantity
+    public int TotalItems { get; set; }
+    public decimal TotalPrice { get; set; }
+
+    private void CalculateTotalPrice()
     {
-        get => _quantity;
-        set
-        {
-            _quantity = value;
-            UpdateTotalPrice();
-        }
+        TotalPrice = SaleProducts
+            .Sum(saleProduct => saleProduct.Quantity * saleProduct.Product.Price); 
     }
 
-    public decimal TotalPrice
+    private void CalculateTotalItems()
     {
-        get => _totalPrice;
-        private set => _totalPrice = value;
+        TotalItems = SaleProducts.Sum(saleProducts => saleProducts.Quantity);
     }
-
-    private void UpdateTotalPrice()
+    
+    public List<Product> GetProducts()
     {
-        _totalPrice = _unitPrice * _quantity;
+        return SaleProducts
+            .Select(sp => sp.Product)
+            .ToList();
     }
 }

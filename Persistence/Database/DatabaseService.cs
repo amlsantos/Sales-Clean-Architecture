@@ -8,6 +8,7 @@ using Persistence.Customers;
 using Persistence.Employees;
 using Persistence.Products;
 using Persistence.Sales;
+using Persistence.SalesProducts;
 
 namespace Persistence.Database;
 
@@ -20,7 +21,7 @@ public class DatabaseService : DbContext, IDatabaseService
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData";
+        const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData4";
         optionsBuilder.UseSqlServer(connectionString);
     }
 
@@ -32,6 +33,7 @@ public class DatabaseService : DbContext, IDatabaseService
         modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new SaleConfiguration());
+        modelBuilder.ApplyConfiguration(new SaleProductConfiguration());
     }
 
     public async Task Save()

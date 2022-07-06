@@ -11,23 +11,18 @@ public class SaleConfiguration : IEntityTypeConfiguration<Sale>
     {
         builder.HasKey(s => s.Id);
         
-        builder.Property(s => s.Date).IsRequired();
+        builder.Property(s => s.CreatedDate).IsRequired();
         builder.Property(s => s.TotalPrice).IsRequired().HasPrecision(5, 2);
         builder.Property(s => s.CustomerId).IsRequired();
         builder.Property(s => s.EmployeeId).IsRequired();
-        builder.Property(s => s.ProductId).IsRequired();
 
         builder.HasOne(s => s.Customer)
-            .WithOne(c => c.Sale)
-            .HasForeignKey<Sale>(s => s.CustomerId);
+            .WithMany(c => c.Sales)
+            .HasForeignKey(s => s.CustomerId);
         
         builder.HasOne(s => s.Employee)
-            .WithOne(e => e.Sale)
-            .HasForeignKey<Sale>(e => e.EmployeeId);
-
-        builder.HasOne(s => s.Product)
-            .WithOne(e => e.Sale)
-            .HasForeignKey<Sale>(e => e.ProductId);
+            .WithMany(c => c.Sales)
+            .HasForeignKey(s => s.EmployeeId);
         
         builder.HasData(DatabaseInitializer.Sales);
     }

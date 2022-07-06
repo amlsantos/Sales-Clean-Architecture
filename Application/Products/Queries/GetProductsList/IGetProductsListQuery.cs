@@ -2,5 +2,5 @@
 
 public interface IGetProductsListQuery
 {
-    List<ProductModel> Execute();
+    List<ProductListModel> Execute();
 }

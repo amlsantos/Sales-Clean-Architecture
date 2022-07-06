@@ -1,6 +1,9 @@
 ﻿using Application.Interfaces;
+using Application.Products.Commands.CreateProduct;
 using Application.Sales.Commands.CreateSale.Factory;
 using Common.Dates;
+using Domain.Products;
+using Domain.SalesProducts;
 
 namespace Application.Sales.Commands.CreateSale;
 
@@ -29,19 +32,29 @@ public class CreateSaleCommand : ICreateSaleCommand
 
         var customer = _database.Customers.Single(p => p.Id == model.CustomerId);
         var employee = _database.Employees.Single(p => p.Id == model.EmployeeId);
-        var product = _database.Products.Single(p => p.Id == model.ProductId);
-        var quantity = model.Quantity;
+        var products = ToSalesProducts(_database.Products.ToList(), model.Products);
 
         var sale = _factory.Create(
             date,
             customer, 
             employee, 
-            product, 
-            quantity);
+            products);
 
         _database.Sales.Add(sale);
         await _database.Save();
         
-        _inventory.NotifySaleOcurred(product.Id, quantity);
+        model.Products
+            .ForEach(p => _inventory.NotifySaleOcurred(p.ProductId, p.Quantity));
+    }
+    
+    private List<SaleProduct> ToSalesProducts(List<Product> productsDbSet, List<ProductModel> productsModel)
+    {
+        return productsModel
+            .Select(productModel => new SaleProduct()
+            {
+                Product = productsDbSet.Single(p => p.Id == productModel.ProductId), 
+                Quantity = productModel.Quantity
+            })
+        .ToList();
     }
 }

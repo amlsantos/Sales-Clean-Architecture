@@ -1,6 +1,6 @@
 ﻿namespace Application.Products.Queries.GetProductsList;
 
-public class ProductModel
+public class ProductListModel
 {
     public int Id { get; set; }
 

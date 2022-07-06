@@ -19,7 +19,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ProductModel> Get()
+    public IEnumerable<ProductListModel> Get()
     {
         return _query.Execute();
     }

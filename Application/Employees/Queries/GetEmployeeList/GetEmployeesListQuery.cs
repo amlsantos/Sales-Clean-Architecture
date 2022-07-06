@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Employees.Queries.GetEmployeeList;
 
@@ -17,7 +18,7 @@ public class GetEmployeesListQuery : IGetEmployeesListQuery
             {
                 Id = p.Id,
                 Name = p.Name
-            });               
+            });
 
         return employees.ToList();
     }

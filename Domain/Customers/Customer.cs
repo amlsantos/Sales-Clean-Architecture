@@ -8,5 +8,5 @@ public class Customer : IEntity
     public int Id { get; set; }
     
     public string Name { get; set; }
-    public Sale Sale { get; set; }
+    public List<Sale> Sales { get; set; }
 }

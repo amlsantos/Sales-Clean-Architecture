@@ -12,9 +12,10 @@ public class GetSaleDetailQuery : IGetSaleDetailQuery
         _database = database;
     }
 
-    public SaleDetailModel Execute(int id)
+    public async Task<SaleDetailModel> Execute(int id)
     {
-        var sale = _database.Sales
+        var sale = await _database.Sales
+            .GetAll()
             .Include(s => s.Customer)
             .Include(s => s.Employee)
             .Include(s => s.SaleProducts)
@@ -32,7 +33,7 @@ public class GetSaleDetailQuery : IGetSaleDetailQuery
                 TotalQuantity = s.SaleProducts.Sum(sp => sp.Quantity),
                 TotalPrice = s.SaleProducts.Sum(sp => sp.Product.Price),
             })
-            .Single();
+            .SingleAsync();
 
         return sale;
     }

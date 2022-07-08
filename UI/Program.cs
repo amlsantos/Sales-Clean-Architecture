@@ -34,7 +34,7 @@ public static class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<DatabaseService>();
+        services.AddDbContext<DatabaseContext>();
         services.AddControllersWithViews()
             .AddRazorOptions(options =>
                 {
@@ -45,7 +45,9 @@ public static class Program
 
     private static void ConfigureDi(IServiceCollection services)
     {
+        services.AddScoped<IDatabaseContext, DatabaseContext>();
         services.AddScoped<IDatabaseService, DatabaseService>();
+
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();
         services.AddScoped<ICreateSaleViewModelFactory, CreateSaleViewModelFactory>();

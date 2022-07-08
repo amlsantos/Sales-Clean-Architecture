@@ -38,7 +38,7 @@ public static class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<DatabaseService>();
+        services.AddDbContext<DatabaseContext>();
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAllHeaders", builder =>
@@ -58,8 +58,11 @@ public static class Program
     private static void ConfigureDi(IServiceCollection services)
     {
         services.AddScoped<IDatabaseService, DatabaseService>();
+        services.AddScoped<IDatabaseContext, DatabaseContext>();
+
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();
+        
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<IWebClientWrapper, WebClientWrapper>();
 
@@ -78,7 +81,7 @@ public static class Program
     private static void RunMigrations(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+        var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
         context.Database.Migrate();
     }

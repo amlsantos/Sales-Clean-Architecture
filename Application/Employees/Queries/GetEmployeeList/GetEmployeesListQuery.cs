@@ -12,14 +12,17 @@ public class GetEmployeesListQuery : IGetEmployeesListQuery
         _database = database;
     }
 
-    public List<EmployeeModel> Execute()
+    public async Task<List<EmployeeModel>> Execute()
     {
-        var employees = _database.Employees.Select(p => new EmployeeModel
+        var employees = _database
+            .Employees
+            .GetAll()
+            .Select(p => new EmployeeModel
             {
                 Id = p.Id,
                 Name = p.Name
             });
 
-        return employees.ToList();
+        return await employees.ToListAsync();
     }
 }

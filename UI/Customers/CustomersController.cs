@@ -16,9 +16,9 @@ public class CustomersController : Controller
     }
 
     [HttpGet]
-    public ViewResult Index()
+    public async Task<ViewResult> Index()
     {
-        var customers = _query.Execute();
+        var customers = await _query.Execute();
         return View(customers);
     }
 

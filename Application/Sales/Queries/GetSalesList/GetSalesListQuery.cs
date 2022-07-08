@@ -9,9 +9,11 @@ public class GetSalesListQuery : IGetSalesListQuery
 
     public GetSalesListQuery(IDatabaseService database) => _database = database;
 
-    public List<SalesListItemModel> Execute()
+    public async Task<List<SalesListItemModel>> Execute()
     {
-        var sales = _database.Sales
+        var sales = _database
+            .Sales
+            .GetAll()
             .Include(s => s.Customer)
             .Include(s => s.Employee)
             .Include(s => s.SaleProducts)
@@ -25,6 +27,6 @@ public class GetSalesListQuery : IGetSalesListQuery
                 TotalPrice = s.SaleProducts.Sum(s => s.Product.Price)
             });
 
-        return sales.ToList();
+        return await sales.ToListAsync();
     }
 }

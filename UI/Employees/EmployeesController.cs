@@ -15,9 +15,9 @@ public class EmployeesController : Controller
         _command = command;
     }
 
-    public ViewResult Index()
+    public async Task<ViewResult> Index()
     {
-        var employees = _query.Execute();
+        var employees = await _query.Execute();
         return View(employees);
     }
 

@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Products.Queries.GetProductsList;
 
@@ -11,15 +12,18 @@ public class GetProductsListQuery : IGetProductsListQuery
         _database = database;
     }
 
-    public List<ProductListModel> Execute()
+    public async Task<List<ProductListModel>> Execute()
     {
-        var products = _database.Products.Select(p => new ProductListModel
+        var products = _database
+            .Products
+            .GetAll()
+            .Select(p => new ProductListModel
             {
                 Id = p.Id, 
                 Name = p.Name,
                 UnitPrice = p.Price
             });
 
-        return products.ToList();
+        return await products.ToListAsync();
     }
 }

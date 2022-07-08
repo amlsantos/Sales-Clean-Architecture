@@ -16,7 +16,7 @@ public class CreateCustomerCommand : ICreateCustomerCommand
             Name = model.Name
         };
 
-        _database.Customers.Add(customer);
+        await _database.Customers.Add(customer);
         await _database.Save();
     }
 }

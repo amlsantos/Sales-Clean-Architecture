@@ -1,9 +1,9 @@
 ﻿using Application.Interfaces;
-using Application.Products.Commands.CreateProduct;
 using Application.Sales.Commands.CreateSale.Factory;
 using Common.Dates;
 using Domain.Products;
 using Domain.SalesProducts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sales.Commands.CreateSale;
 
@@ -29,10 +29,9 @@ public class CreateSaleCommand : ICreateSaleCommand
     public async Task Execute(CreateSaleModel model)
     {
         var date = _dateService.GetDate();
-
-        var customer = _database.Customers.Single(p => p.Id == model.CustomerId);
-        var employee = _database.Employees.Single(p => p.Id == model.EmployeeId);
-        var products = ToSalesProducts(_database.Products.ToList(), model.Products);
+        var customer = await _database.Customers.Get(model.CustomerId);
+        var employee = await _database.Employees.Get(model.EmployeeId);
+        var products = ToSalesProducts(await _database.Products.GetAll().ToListAsync(), model.Products);
 
         var sale = _factory.Create(
             date,
@@ -40,11 +39,12 @@ public class CreateSaleCommand : ICreateSaleCommand
             employee, 
             products);
 
-        _database.Sales.Add(sale);
+        await _database.Sales.Add(sale);
         await _database.Save();
         
         model.Products
-            .ForEach(p => _inventory.NotifySaleOcurred(p.ProductId, p.Quantity));
+            .ForEach(p => 
+                _inventory.NotifySaleOcurred(p.ProductId, p.Quantity));
     }
     
     private List<SaleProduct> ToSalesProducts(List<Product> productsDbSet, List<ProductModel> productsModel)

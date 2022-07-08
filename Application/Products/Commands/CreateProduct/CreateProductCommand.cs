@@ -17,7 +17,7 @@ public class CreateProductCommand : ICreateProductCommand
             Price = model.Price
         };
 
-        _database.Products.Add(product);
+        await _database.Products.Add(product);
         await _database.Save();
     }
 }

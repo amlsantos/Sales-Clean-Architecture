@@ -20,6 +20,8 @@ public class InventoryService : IInventoryService
         var address = string.Format(AddressTemplate, productId);
         var json = string.Format(JsonTemplate, quantity);
 
+        Console.WriteLine($"The product with id:{productId} was sold {quantity} times");
+        
         _client.Post(address, json);
     }
 }

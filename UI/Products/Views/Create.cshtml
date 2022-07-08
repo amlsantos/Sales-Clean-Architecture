@@ -1,0 +1,23 @@
+﻿@model Application.Products.Commands.CreateProduct.CreateProductModel
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Shared/Views/_Layout.cshtml";
+}
+
+<h2>Create Employee</h2>
+
+@using (Html.BeginForm("Create", "Products", FormMethod.Post))
+{
+    <form class="form-horizontal">
+        <div class="mb-3 mt-3">
+            <label class="form-label">Name</label>
+            @Html.TextBoxFor(c => c.Name, new { @class = "form-control", @placeholder = "Enter name" })
+        </div>
+        <div class="mb-3 mt-3">
+            <label class="form-label">Price</label>
+            @Html.TextBoxFor(c => c.Price, new { @class = "form-control", @placeholder = "Enter price" })
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+}

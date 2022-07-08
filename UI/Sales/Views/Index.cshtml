@@ -1,0 +1,40 @@
+﻿@model System.Collections.Generic.List<Application.Sales.Queries.GetSalesList.SalesListItemModel>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Shared/Views/_Layout.cshtml";
+}
+
+<h2>Sales</h2>
+
+<div class="text-end">
+    <a class="btn btn-primary" href="Sales/Create">Create Sale</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Customer name</th>
+        <th>Employee name</th>
+        <th>Number of items</th>
+        <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var sale in Model)
+    {
+        <tr>
+            <td><a href="Sales/Detail/@sale.Id">@sale.Id</a></td>
+            <td>@sale.Date.ToString("d")</td>
+            <td>@sale.CustomerName</td>
+            <td>@sale.EmployeeName</td>
+            <td>@sale.Products.Count</td>
+            <td>$@sale.TotalPrice</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

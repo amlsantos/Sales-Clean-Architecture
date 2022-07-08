@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-using Api.Utils;
 using Application.Customers.Commands.CreateCustomer;
 using Application.Customers.Queries.GetCustomerList;
 using Application.Employees.Commands.CreateEmployee;
@@ -14,23 +12,21 @@ using Application.Sales.Queries.GetSalesList;
 using Common.Dates;
 using Infrastructure.InventoryService;
 using Infrastructure.Network;
-using Microsoft.EntityFrameworkCore;
 using Persistence.Database;
+using UI.Sales.Services;
 
-namespace Api;
+namespace UI;
 
 public static class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
         var services = builder.Services;
         ConfigureServices(services);
         ConfigureDi(services);
-        
+
         var app = builder.Build();
-        RunMigrations(app);
         ConfigureApp(app);
 
         app.Run();
@@ -39,20 +35,12 @@ public static class Program
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddDbContext<DatabaseService>();
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAllHeaders", builder =>
+        services.AddControllersWithViews()
+            .AddRazorOptions(options =>
                 {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                }
-            );
-        });
-        services.AddControllers()
-            .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+                    options.ViewLocationFormats.Add("~/{1}/Views/{0}.cshtml");
+                    options.PageViewLocationFormats.Add("~/Shared/Views/{0}.cshtml");
+                });
     }
 
     private static void ConfigureDi(IServiceCollection services)
@@ -60,6 +48,7 @@ public static class Program
         services.AddScoped<IDatabaseService, DatabaseService>();
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();
+        services.AddScoped<ICreateSaleViewModelFactory, CreateSaleViewModelFactory>();
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<IWebClientWrapper, WebClientWrapper>();
 
@@ -68,33 +57,28 @@ public static class Program
         services.AddScoped<IGetProductsListQuery, GetProductsListQuery>();
         services.AddScoped<IGetSalesListQuery, GetSalesListQuery>();
         services.AddScoped<IGetSaleDetailQuery, GetSaleDetailQuery>();
-        
+
         services.AddScoped<ICreateSaleCommand, CreateSaleCommand>();
         services.AddScoped<ICreateCustomerCommand, CreateCustomerCommand>();
         services.AddScoped<ICreateEmployeeCommand, CreateEmployeeCommand>();
         services.AddScoped<ICreateProductCommand, CreateProductCommand>();
     }
 
-    private static void RunMigrations(WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<DatabaseService>();
-
-        context.Database.Migrate();
-    }
-
     private static void ConfigureApp(WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
+        if (!app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
         }
-        
-        app.UseMiddleware<ExceptionMiddleware>();
+
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
         app.UseAuthorization();
-        app.MapControllers();
+
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
     }
 }
-

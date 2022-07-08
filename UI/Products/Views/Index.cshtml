@@ -1,0 +1,32 @@
+﻿@model System.Collections.Generic.List<Application.Products.Queries.GetProductsList.ProductListModel>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Shared/Views/_Layout.cshtml";
+}
+
+<h2>Products</h2>
+
+<div class="text-end">
+    <a class="btn btn-primary" href="Products/Create">Create Product</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var products in Model)
+        {
+            <tr>
+                <td>@products.Id</td>
+                <td>@products.Name</td>
+                <td>$@products.UnitPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>

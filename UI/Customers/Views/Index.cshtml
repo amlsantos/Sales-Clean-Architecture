@@ -1,0 +1,32 @@
+﻿@model System.Collections.Generic.List<Application.Customers.Queries.GetCustomerList.CustomerModel>
+
+@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Shared/Views/_Layout.cshtml";
+}
+
+<h2>Customers</h2>
+
+<div class="text-end">
+    <a class="btn btn-primary" href="Customers/Create">Create Customer</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var customer in Model)
+    {
+        <tr>
+            <td>@customer.Id</td>
+            <td>@customer.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+

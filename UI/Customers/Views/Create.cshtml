@@ -1,0 +1,19 @@
+﻿@model Application.Customers.Commands.CreateCustomer.CreateCustomerModel
+
+@{
+    ViewBag.Title = "Customers";
+    Layout = "~/Shared/Views/_Layout.cshtml";
+}
+
+<h2>Create Customer</h2>
+
+@using (Html.BeginForm("Create", "Customers", FormMethod.Post))
+{
+    <form class="form-horizontal">
+        <div class="mb-3 mt-3">
+            <label class="form-label">Name</label>
+            @Html.TextBoxFor(c => c.Name, new { @class = "form-control", @placeholder = "Enter name" })
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+}

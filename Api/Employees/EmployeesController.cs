@@ -19,9 +19,9 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<EmployeeModel> Get()
+    public async Task<IEnumerable<EmployeeModel>> Get()
     {
-        return _query.Execute();
+        return await _query.Execute();
     }
 
     [HttpPost]

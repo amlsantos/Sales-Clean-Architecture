@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces;
-using Application.Products.Commands.CreateProduct;
 using Application.Sales.Commands.CreateSale.Factory;
 using Common.Dates;
 using Domain.Products;
+using Domain.Sales;
 using Domain.SalesProducts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sales.Commands.CreateSale;
 
@@ -29,32 +30,23 @@ public class CreateSaleCommand : ICreateSaleCommand
     public async Task Execute(CreateSaleModel model)
     {
         var date = _dateService.GetDate();
+        var customer = _database.Customers.FirstOrDefault(p => p.Id == model.CustomerId);
+        var employee = _database.Employees.FirstOrDefault(p => p.Id == model.EmployeeId);
+        var products = await _database.Products.ToListAsync();
+        var saleProducts = ToSalesProducts(products, model.Products);
+        var sale = _factory.Create(date, customer.Id, employee.Id, saleProducts);
 
-        var customer = _database.Customers.Single(p => p.Id == model.CustomerId);
-        var employee = _database.Employees.Single(p => p.Id == model.EmployeeId);
-        var products = ToSalesProducts(_database.Products.ToList(), model.Products);
-
-        var sale = _factory.Create(
-            date,
-            customer, 
-            employee, 
-            products);
-
-        _database.Sales.Add(sale);
-        await _database.Save();
-        
-        model.Products
-            .ForEach(p => _inventory.NotifySaleOcurred(p.ProductId, p.Quantity));
+        await _database.Sales.AddAsync(sale);
+        await _database.SaveAsync();
     }
-    
-    private List<SaleProduct> ToSalesProducts(List<Product> productsDbSet, List<ProductModel> productsModel)
+
+    private List<SaleProduct> ToSalesProducts(List<Product> products, List<ProductModel> productsModel)
     {
-        return productsModel
-            .Select(productModel => new SaleProduct()
+        return productsModel.Select(productModel => new SaleProduct()
             {
-                Product = productsDbSet.Single(p => p.Id == productModel.ProductId), 
+                Product = products.Single(p => p.Id == productModel.ProductId),
                 Quantity = productModel.Quantity
             })
-        .ToList();
+            .ToList();
     }
 }

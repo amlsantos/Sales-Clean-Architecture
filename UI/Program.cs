@@ -37,15 +37,16 @@ public static class Program
         services.AddDbContext<DatabaseService>();
         services.AddControllersWithViews()
             .AddRazorOptions(options =>
-                {
-                    options.ViewLocationFormats.Add("~/{1}/Views/{0}.cshtml");
-                    options.PageViewLocationFormats.Add("~/Shared/Views/{0}.cshtml");
-                });
+            {
+                options.ViewLocationFormats.Add("~/{1}/Views/{0}.cshtml");
+                options.PageViewLocationFormats.Add("~/Shared/Views/{0}.cshtml");
+            });
     }
 
     private static void ConfigureDi(IServiceCollection services)
     {
-        services.AddScoped<IDatabaseService, DatabaseService>();
+        services.AddSingleton<IDatabaseService, DatabaseService>();
+        
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();
         services.AddScoped<ICreateSaleViewModelFactory, CreateSaleViewModelFactory>();

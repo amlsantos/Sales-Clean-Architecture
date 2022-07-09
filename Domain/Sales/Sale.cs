@@ -13,20 +13,21 @@ public class Sale : IEntity
     public Customer Customer { get; set; }
     public int EmployeeId { get; set; }
     public Employee Employee { get; set; }
-    
+
     private List<SaleProduct> _saleProducts;
+
     public List<SaleProduct> SaleProducts
     {
         get => _saleProducts;
         set
         {
             _saleProducts = value;
-            
+
             CalculateTotalPrice();
             CalculateTotalItems();
         }
     }
-    
+
     public DateTime CreatedDate { get; set; }
 
     public int TotalItems { get; set; }
@@ -35,14 +36,14 @@ public class Sale : IEntity
     private void CalculateTotalPrice()
     {
         TotalPrice = SaleProducts
-            .Sum(saleProduct => saleProduct.Quantity * saleProduct.Product.Price); 
+            .Sum(saleProduct => saleProduct.Quantity * saleProduct.Product.Price);
     }
 
     private void CalculateTotalItems()
     {
         TotalItems = SaleProducts.Sum(saleProducts => saleProducts.Quantity);
     }
-    
+
     public List<Product> GetProducts()
     {
         return SaleProducts

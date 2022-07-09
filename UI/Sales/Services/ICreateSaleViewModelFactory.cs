@@ -4,5 +4,5 @@ namespace UI.Sales.Services;
 
 public interface ICreateSaleViewModelFactory
 {
-    CreateSaleViewModel Create();
+    Task<CreateSaleViewModel> Create();
 }

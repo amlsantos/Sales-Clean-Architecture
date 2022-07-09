@@ -13,5 +13,5 @@ public interface IDatabaseService
     DbSet<Product> Products { get; set; }
     DbSet<Sale> Sales { get; set; }
 
-    Task Save();
+    Task SaveAsync();
 }

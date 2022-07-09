@@ -20,11 +20,11 @@ public class CreateSaleViewModelFactory : ICreateSaleViewModelFactory
         _productsQuery = productsQuery;
     }
 
-    public CreateSaleViewModel Create()
+    public async Task<CreateSaleViewModel> Create()
     {
-        var employees = _employeesQuery.Execute();
-        var customers = _customersQuery.Execute();
-        var products = _productsQuery.Execute();
+        var employees = await _employeesQuery.Execute();
+        var customers = await _customersQuery.Execute();
+        var products = await _productsQuery.Execute();
 
         return new CreateSaleViewModel
         {

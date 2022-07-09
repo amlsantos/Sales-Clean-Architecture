@@ -22,16 +22,16 @@ public class SalesController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<SalesListItemModel> Get()
+    public async Task<IEnumerable<SalesListItemModel>> Get()
     {
-        return _listQuery.Execute();
+        return await _listQuery.Execute();
     }
 
     [HttpGet]
     [Route("{id}")]
-    public SaleDetailModel Get(int id)
+    public async Task<SaleDetailModel> Get(int id)
     {
-        return _detailQuery.Execute(id);
+        return await _detailQuery.Execute(id);
     }
 
     [HttpPost]

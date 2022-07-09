@@ -16,9 +16,9 @@ public class CustomersController : Controller
     }
 
     [HttpGet]
-    public ViewResult Index()
+    public async Task<ViewResult> Index()
     {
-        var customers = _query.Execute();
+        var customers = await _query.Execute();
         return View(customers);
     }
 
@@ -26,9 +26,9 @@ public class CustomersController : Controller
     public IActionResult Create() => View();
 
     [HttpPost]
-    public IActionResult Create(CreateCustomerModel model)
+    public async Task<IActionResult> Create(CreateCustomerModel model)
     {
-        _command.Execute(model);
+        await _command.Execute(model);
         return RedirectToAction("Index", "Customers");
     }
 }

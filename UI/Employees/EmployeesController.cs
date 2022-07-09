@@ -15,18 +15,18 @@ public class EmployeesController : Controller
         _command = command;
     }
 
-    public ViewResult Index()
+    public async Task<ViewResult> Index()
     {
-        var employees = _query.Execute();
+        var employees = await _query.Execute();
         return View(employees);
     }
 
     public IActionResult Create() => View();
 
     [HttpPost]
-    public IActionResult Create(CreateEmployeeModel model)
+    public async Task<IActionResult> Create(CreateEmployeeModel model)
     {
-        _command.Execute(model);
+        await _command.Execute(model);
         return RedirectToAction("Index", "Employees");
     }
 }

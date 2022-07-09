@@ -2,5 +2,5 @@
 
 public interface IGetEmployeesListQuery
 {
-    List<EmployeeModel> Execute();
+    Task<List<EmployeeModel>> Execute();
 }

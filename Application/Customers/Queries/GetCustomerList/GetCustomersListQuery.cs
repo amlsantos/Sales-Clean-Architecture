@@ -12,7 +12,7 @@ public class GetCustomersListQuery : IGetCustomersListQuery
         _database = database;
     }
 
-    public List<CustomerModel> Execute()
+    public async Task<List<CustomerModel>> Execute()
     {
         var customers = _database.Customers.Select(p => new CustomerModel()
             {
@@ -21,6 +21,6 @@ public class GetCustomersListQuery : IGetCustomersListQuery
             }
         );
 
-        return customers.ToList();
+        return await customers.ToListAsync();
     }
 }

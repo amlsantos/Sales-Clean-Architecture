@@ -2,5 +2,5 @@
 
 public interface IGetSalesListQuery
 {
-    List<SalesListItemModel> Execute();
+    Task<List<SalesListItemModel>> Execute();
 }

@@ -15,18 +15,18 @@ public class ProductsController : Controller
         _command = command;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var products = _query.Execute();
+        var products = await _query.Execute();
         return View(products);
     }
     
     public IActionResult Create() => View();
 
     [HttpPost]
-    public IActionResult Create(CreateProductModel model)
+    public async Task<IActionResult> Create(CreateProductModel model)
     {
-        _command.Execute(model);
+        await _command.Execute(model);
         return RedirectToAction("Index");
     }
 }

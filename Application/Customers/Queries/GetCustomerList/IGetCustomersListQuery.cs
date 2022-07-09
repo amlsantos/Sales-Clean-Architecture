@@ -2,5 +2,5 @@
 
 public interface IGetCustomersListQuery
 {
-    List<CustomerModel> Execute();
+    Task<List<CustomerModel>> Execute();
 }

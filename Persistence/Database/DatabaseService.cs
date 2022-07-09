@@ -36,7 +36,7 @@ public class DatabaseService : DbContext, IDatabaseService
         modelBuilder.ApplyConfiguration(new SaleProductConfiguration());
     }
 
-    public async Task Save()
+    public async Task SaveAsync()
     {
         await SaveChangesAsync();
     }

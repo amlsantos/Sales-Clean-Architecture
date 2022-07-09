@@ -16,7 +16,7 @@ public class CreateEmployeeCommand : ICreateEmployeeCommand
             Name = model.Name
         };
 
-        _database.Employees.Add(employee);
-        await _database.Save();
+        await _database.Employees.AddAsync(employee);
+        await _database.SaveAsync();
     }
 }

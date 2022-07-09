@@ -19,15 +19,15 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<CustomerModel> Get()
+    public async Task<IEnumerable<CustomerModel>> Get()
     {
-        return _query.Execute();
+        return await _query.Execute();
     }
 
     [HttpPost]
-    public HttpResponseMessage Create(CreateCustomerModel model)
+    public async Task<HttpResponseMessage> Create(CreateCustomerModel model)
     {
-        _command.Execute(model);
+        await _command.Execute(model);
         
         return new HttpResponseMessage(HttpStatusCode.Created);
     }

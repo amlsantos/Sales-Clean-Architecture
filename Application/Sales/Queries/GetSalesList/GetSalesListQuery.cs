@@ -9,22 +9,26 @@ public class GetSalesListQuery : IGetSalesListQuery
 
     public GetSalesListQuery(IDatabaseService database) => _database = database;
 
-    public List<SalesListItemModel> Execute()
+    public async Task<List<SalesListItemModel>> Execute()
     {
-        var sales = _database.Sales
+        var sales = await _database.Sales
             .Include(s => s.Customer)
             .Include(s => s.Employee)
             .Include(s => s.SaleProducts)
-            .Select(s => new SalesListItemModel()
-            {
-                Id = s.Id,
-                Date = s.CreatedDate,
-                CustomerName = s.Customer.Name,
-                EmployeeName = s.Employee.Name,
-                Products = s.SaleProducts.Select(s => s.Product.Name).ToList(),
-                TotalPrice = s.SaleProducts.Sum(s => s.Product.Price)
-            });
+            .ThenInclude(s => s.Product)
+            .ToListAsync();
 
-        return sales.ToList();
+        return (from sale in sales
+            let products = sale.SaleProducts.Select(s => s.Product.Name).ToList()
+            let totalPrice = sale.SaleProducts.Sum(s => s.Product.Price)
+            select new SalesListItemModel()
+            {
+                Id = sale.Id,
+                Date = sale.CreatedDate,
+                CustomerName = sale.Customer.Name,
+                EmployeeName = sale.Employee.Name,
+                Products = products,
+                TotalPrice = totalPrice
+            }).ToList();
     }
 }

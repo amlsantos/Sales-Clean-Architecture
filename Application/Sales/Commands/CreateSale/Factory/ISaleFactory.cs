@@ -7,5 +7,5 @@ namespace Application.Sales.Commands.CreateSale.Factory;
 
 public interface ISaleFactory
 {
-    Sale Create(DateTime date, Customer customer, Employee employee, List<SaleProduct> saleProducts);
+    Sale Create(DateTime date, int customerId, int employeeId, List<SaleProduct> saleProducts);
 }

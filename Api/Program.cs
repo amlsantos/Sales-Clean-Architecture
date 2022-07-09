@@ -57,7 +57,8 @@ public static class Program
 
     private static void ConfigureDi(IServiceCollection services)
     {
-        services.AddScoped<IDatabaseService, DatabaseService>();
+        services.AddSingleton<IDatabaseService, DatabaseService>();
+        
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();
         services.AddScoped<IInventoryService, InventoryService>();

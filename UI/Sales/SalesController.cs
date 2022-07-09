@@ -22,20 +22,20 @@ public class SalesController : Controller
         _factory = factory;
     }
     
-    public ViewResult Index()
+    public async Task<ViewResult> Index()
     {
-        var sales = _salesListQuery.Execute();
+        var sales = await _salesListQuery.Execute();
         return View(sales);
     }
 
-    public ViewResult Create()
+    public async Task<ViewResult> Create()
     {
-        var viewModel = _factory.Create();
+        var viewModel = await _factory.Create();
         return View(viewModel);
     }
     
     [HttpPost]
-    public IActionResult Create(CreateSaleViewModel viewModel)
+    public async Task<IActionResult> Create(CreateSaleViewModel viewModel)
     {
         var model = new CreateSaleModel
         {
@@ -48,14 +48,13 @@ public class SalesController : Controller
             }).ToList()
         };
 
-        _createCommand.Execute(model);
-
+        await _createCommand.Execute(model);
         return RedirectToAction("Index", "Sales");
     }
 
-    public ViewResult Detail(int id)
+    public async Task<ViewResult> Detail(int id)
     {
-        var sale = _saleDetailQuery.Execute(id);
+        var sale = await _saleDetailQuery.Execute(id);
         return View(sale);
     }
 }

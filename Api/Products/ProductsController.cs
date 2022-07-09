@@ -19,9 +19,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<ProductListModel> Get()
+    public async Task<IEnumerable<ProductListModel>> Get()
     {
-        return _query.Execute();
+        return await _query.Execute();
     }
 
     [HttpPost]

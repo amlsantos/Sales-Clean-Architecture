@@ -12,3 +12,10 @@ public class SaleDetailModel
     public decimal TotalPrice { get; set; }
     public DateTime Date { get; set; }
 }
+
+public class ProductDetailModel
+{
+    public int ProductId { get; set; }
+    public string ProductName { get; set; }
+    public int Quantity { get; set; }
+}

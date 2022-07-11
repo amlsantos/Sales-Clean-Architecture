@@ -14,13 +14,13 @@ public class GetSaleDetailQuery : IGetSaleDetailQuery
 
     public async Task<SaleDetailModel> Execute(int id)
     {
-        var sales = await _database.Sales
-            .Include(s => s.Customer)
-            .Include(s => s.Employee)
-            .Include(s => s.SaleProducts)
-            .ThenInclude(s => s.Product)
-            .ToListAsync();
-        var sale = sales.FirstOrDefault(s => s.Id == id);
+        // var sales = await _database.Sales.GetAll();
+        //     var projectedSales = await sales.Include(s => s.Customer)
+        //     .Include(s => s.Employee)
+        //     .Include(s => s.SaleProducts)
+        //     .ThenInclude(s => s.Product)
+        //     .ToListAsync();
+        var sale = await _database.Sales.Get(id);
 
         return new SaleDetailModel()
         {

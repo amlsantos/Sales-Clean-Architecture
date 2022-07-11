@@ -26,27 +26,37 @@ public class CreateSaleCommand : ICreateSaleCommand
         _factory = factory;
         _inventory = inventory;
     }
-
+    
     public async Task Execute(CreateSaleModel model)
     {
         var date = _dateService.GetDate();
-        var customer = _database.Customers.FirstOrDefault(p => p.Id == model.CustomerId);
-        var employee = _database.Employees.FirstOrDefault(p => p.Id == model.EmployeeId);
-        var products = await _database.Products.ToListAsync();
-        var saleProducts = ToSalesProducts(products, model.Products);
+        var customer = await _database.Customers.Get(model.CustomerId);
+        var employee = await _database.Employees.Get(model.EmployeeId);
+        var saleProducts = await ToSalesProducts(model.Products);
         var sale = _factory.Create(date, customer.Id, employee.Id, saleProducts);
 
+        saleProducts.ForEach(sp => 
+            _inventory.NotifySaleOcurred(sp.ProductId, sp.Quantity));
+        
         await _database.Sales.AddAsync(sale);
         await _database.SaveAsync();
     }
-
-    private List<SaleProduct> ToSalesProducts(List<Product> products, List<ProductModel> productsModel)
+    
+    private async Task<List<SaleProduct>> ToSalesProducts(List<ProductModel> selectedProducts)
     {
-        return productsModel.Select(productModel => new SaleProduct()
+        var output = new List<SaleProduct>();
+        
+        foreach (var product in selectedProducts)
+        {
+            var model = new SaleProduct()
             {
-                Product = products.Single(p => p.Id == productModel.ProductId),
-                Quantity = productModel.Quantity
-            })
-            .ToList();
+                Product = await _database.Products.Get(product.ProductId),
+                Quantity = product.Quantity
+            };
+            
+            output.Add(model);
+        }
+
+        return output;
     }
 }

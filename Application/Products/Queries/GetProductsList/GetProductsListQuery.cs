@@ -14,13 +14,13 @@ public class GetProductsListQuery : IGetProductsListQuery
 
     public async Task<List<ProductListModel>> Execute()
     {
-        var products = _database.Products.Select(p => new ProductListModel
-            {
-                Id = p.Id, 
-                Name = p.Name,
-                UnitPrice = p.Price
-            });
+        var products = await _database.Products.GetAll();
 
-        return await products.ToListAsync();
+        return products.Select(p => new ProductListModel
+        {
+            Id = p.Id, 
+            Name = p.Name,
+            UnitPrice = p.Price
+        }).ToList();
     }
 }

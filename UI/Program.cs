@@ -12,6 +12,7 @@ using Application.Sales.Queries.GetSalesList;
 using Common.Dates;
 using Infrastructure.InventoryService;
 using Infrastructure.Network;
+using Microsoft.EntityFrameworkCore;
 using Persistence.Database;
 using UI.Sales.Services;
 
@@ -27,6 +28,7 @@ public static class Program
         ConfigureDi(services);
 
         var app = builder.Build();
+        RunMigrations(app);
         ConfigureApp(app);
 
         app.Run();
@@ -34,7 +36,7 @@ public static class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<DatabaseService>();
+        services.AddDbContext<DatabaseContext>();
         services.AddControllersWithViews()
             .AddRazorOptions(options =>
             {
@@ -45,6 +47,7 @@ public static class Program
 
     private static void ConfigureDi(IServiceCollection services)
     {
+        services.AddSingleton<IDatabaseContext, DatabaseContext>();
         services.AddSingleton<IDatabaseService, DatabaseService>();
         
         services.AddScoped<IDateService, DateService>();
@@ -63,6 +66,14 @@ public static class Program
         services.AddScoped<ICreateCustomerCommand, CreateCustomerCommand>();
         services.AddScoped<ICreateEmployeeCommand, CreateEmployeeCommand>();
         services.AddScoped<ICreateProductCommand, CreateProductCommand>();
+    }
+    
+    private static void RunMigrations(WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+        context.Database.Migrate();
     }
 
     private static void ConfigureApp(WebApplication app)

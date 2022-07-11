@@ -14,13 +14,13 @@ public class GetCustomersListQuery : IGetCustomersListQuery
 
     public async Task<List<CustomerModel>> Execute()
     {
-        var customers = _database.Customers.Select(p => new CustomerModel()
-            {
-                Id = p.Id, 
-                Name = p.Name
-            }
-        );
+        var customers = await _database.Customers.GetAll();
 
-        return await customers.ToListAsync();
+        return customers.Select(p => new CustomerModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }
+            ).ToList();
     }
 }

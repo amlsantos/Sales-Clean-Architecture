@@ -10,8 +10,8 @@ using Persistence.Database;
 
 namespace Persistence.Migrations
 {
-    [DbContext(typeof(DatabaseService))]
-    partial class DatabaseServiceModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DatabaseContext))]
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -422,7 +422,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 8, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 1,
                             EmployeeId = 1,
                             TotalItems = 0,
@@ -431,7 +431,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2022, 7, 4, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 9, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 2,
                             EmployeeId = 2,
                             TotalItems = 0,
@@ -440,7 +440,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 3,
                             EmployeeId = 3,
                             TotalItems = 0,
@@ -449,7 +449,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 3,
                             EmployeeId = 3,
                             TotalItems = 0,
@@ -458,7 +458,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 1,
                             EmployeeId = 2,
                             TotalItems = 0,
@@ -467,7 +467,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedDate = new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 2,
                             EmployeeId = 3,
                             TotalItems = 0,

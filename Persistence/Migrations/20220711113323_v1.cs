@@ -188,12 +188,12 @@ namespace Persistence.Migrations
                 columns: new[] { "Id", "CreatedDate", "CustomerId", "EmployeeId", "TotalItems", "TotalPrice" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 7, 3, 0, 0, 0, 0, DateTimeKind.Local), 1, 1, 0, 0m },
-                    { 2, new DateTime(2022, 7, 4, 0, 0, 0, 0, DateTimeKind.Local), 2, 2, 0, 0m },
-                    { 3, new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local), 3, 3, 0, 0m },
-                    { 4, new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local), 3, 3, 0, 0m },
-                    { 5, new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local), 1, 2, 0, 0m },
-                    { 6, new DateTime(2022, 7, 5, 0, 0, 0, 0, DateTimeKind.Local), 2, 3, 0, 0m }
+                    { 1, new DateTime(2022, 7, 8, 0, 0, 0, 0, DateTimeKind.Local), 1, 1, 0, 0m },
+                    { 2, new DateTime(2022, 7, 9, 0, 0, 0, 0, DateTimeKind.Local), 2, 2, 0, 0m },
+                    { 3, new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local), 3, 3, 0, 0m },
+                    { 4, new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local), 3, 3, 0, 0m },
+                    { 5, new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local), 1, 2, 0, 0m },
+                    { 6, new DateTime(2022, 7, 10, 0, 0, 0, 0, DateTimeKind.Local), 2, 3, 0, 0m }
                 });
 
             migrationBuilder.InsertData(

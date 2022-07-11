@@ -3,41 +3,33 @@ using Domain.Customers;
 using Domain.Employees;
 using Domain.Products;
 using Domain.Sales;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Customers;
-using Persistence.Employees;
-using Persistence.Products;
-using Persistence.Sales;
-using Persistence.SalesProducts;
 
 namespace Persistence.Database;
 
-public class DatabaseService : DbContext, IDatabaseService
+public class DatabaseService : IDatabaseService
 {
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Employee> Employees { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Sale> Sales { get; set; }
+    private readonly IDatabaseContext _context;
+    private readonly Repository<Customer> _customers;
+    private readonly Repository<Employee> _employees;
+    private readonly Repository<Product> _products;
+    private readonly Repository<Sale> _sales; 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public DatabaseService(IDatabaseContext context)
     {
-        const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData4";
-        optionsBuilder.UseSqlServer(connectionString);
+        _context = context;
+        _customers = new Repository<Customer>(_context.Customers);
+        _employees = new Repository<Employee>(_context.Employees);
+        _products = new Repository<Product>(_context.Products);
+        _sales = new Repository<Sale>(_context.Sales);
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-
-        modelBuilder.ApplyConfiguration(new CustomerConfiguration());
-        modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-        modelBuilder.ApplyConfiguration(new ProductConfiguration());
-        modelBuilder.ApplyConfiguration(new SaleConfiguration());
-        modelBuilder.ApplyConfiguration(new SaleProductConfiguration());
-    }
+    public IRepository<Customer> Customers => _customers;
+    public IRepository<Employee> Employees => _employees;
+    public IRepository<Product> Products => _products;
+    public IRepository<Sale> Sales => _sales;
 
     public async Task SaveAsync()
     {
-        await SaveChangesAsync();
+        await _context.SaveAsync();
     }
 }

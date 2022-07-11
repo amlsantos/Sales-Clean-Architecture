@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Interfaces.Infrastructure;
 using Infrastructure.Network;
 
 namespace Infrastructure.InventoryService;

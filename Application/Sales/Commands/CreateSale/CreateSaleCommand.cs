@@ -1,28 +1,30 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Infrastructure;
+using Application.Interfaces.Persistence;
 using Application.Sales.Commands.CreateSale.Factory;
+using Application.Sales.Commands.CreateSale.Repository;
 using Common.Dates;
-using Domain.Products;
-using Domain.Sales;
 using Domain.SalesProducts;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Sales.Commands.CreateSale;
 
 public class CreateSaleCommand : ICreateSaleCommand
 {
     private readonly IDateService _dateService;
-    private readonly IDatabaseService _database;
+    private readonly ISaleRepositoryFacade _facade;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ISaleFactory _factory;
     private readonly IInventoryService _inventory;
 
     public CreateSaleCommand(
-        IDateService dateService,
-        IDatabaseService database,
+        IDateService dateService, 
+        ISaleRepositoryFacade facade,
+        IUnitOfWork unitOfWork,
         ISaleFactory factory,
         IInventoryService inventory)
     {
         _dateService = dateService;
-        _database = database;
+        _facade = facade;
+        _unitOfWork = unitOfWork;
         _factory = factory;
         _inventory = inventory;
     }
@@ -30,16 +32,16 @@ public class CreateSaleCommand : ICreateSaleCommand
     public async Task Execute(CreateSaleModel model)
     {
         var date = _dateService.GetDate();
-        var customer = await _database.Customers.Get(model.CustomerId);
-        var employee = await _database.Employees.Get(model.EmployeeId);
+        var customer = await _facade.GetCustomer(model.CustomerId);
+        var employee = await _facade.GetEmployee(model.EmployeeId);
         var saleProducts = await ToSalesProducts(model.Products);
         var sale = _factory.Create(date, customer.Id, employee.Id, saleProducts);
 
         saleProducts.ForEach(sp => 
             _inventory.NotifySaleOcurred(sp.ProductId, sp.Quantity));
         
-        await _database.Sales.AddAsync(sale);
-        await _database.SaveAsync();
+        await _facade.AddSaleAsync(sale);
+        await _unitOfWork.SaveAsync();
     }
     
     private async Task<List<SaleProduct>> ToSalesProducts(List<ProductModel> selectedProducts)
@@ -50,7 +52,7 @@ public class CreateSaleCommand : ICreateSaleCommand
         {
             var model = new SaleProduct()
             {
-                Product = await _database.Products.Get(product.ProductId),
+                Product = await _facade.GetProduct(product.ProductId),
                 Quantity = product.Quantity
             };
             

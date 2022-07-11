@@ -1,13 +1,19 @@
 ﻿using Application.Interfaces;
+using Application.Interfaces.Persistence;
 using Domain.Employees;
 
 namespace Application.Employees.Commands.CreateEmployee;
 
 public class CreateEmployeeCommand : ICreateEmployeeCommand
 {
-    private readonly IDatabaseService _database;
+    private readonly IEmployeeRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateEmployeeCommand(IDatabaseService database) => _database = database;
+    public CreateEmployeeCommand(IEmployeeRepository repository, IUnitOfWork unitOfWork)
+    {
+        _repository = repository;
+        _unitOfWork = unitOfWork;
+    }
 
     public async Task Execute(CreateEmployeeModel model)
     {
@@ -16,7 +22,7 @@ public class CreateEmployeeCommand : ICreateEmployeeCommand
             Name = model.Name
         };
 
-        await _database.Employees.AddAsync(employee);
-        await _database.SaveAsync();
+        await _repository.AddAsync(employee);
+        await _unitOfWork.SaveAsync();
     }
 }

@@ -3,17 +3,24 @@ using Application.Customers.Queries.GetCustomerList;
 using Application.Employees.Commands.CreateEmployee;
 using Application.Employees.Queries.GetEmployeeList;
 using Application.Interfaces;
+using Application.Interfaces.Infrastructure;
+using Application.Interfaces.Persistence;
 using Application.Products.Commands.CreateProduct;
 using Application.Products.Queries.GetProductsList;
 using Application.Sales.Commands.CreateSale;
 using Application.Sales.Commands.CreateSale.Factory;
+using Application.Sales.Commands.CreateSale.Repository;
 using Application.Sales.Queries.GetSalesDetail;
 using Application.Sales.Queries.GetSalesList;
 using Common.Dates;
 using Infrastructure.InventoryService;
 using Infrastructure.Network;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Customers;
 using Persistence.Database;
+using Persistence.Employees;
+using Persistence.Products;
+using Persistence.Sales;
 using UI.Sales.Services;
 
 namespace UI;
@@ -48,7 +55,13 @@ public static class Program
     private static void ConfigureDi(IServiceCollection services)
     {
         services.AddSingleton<IDatabaseContext, DatabaseContext>();
-        services.AddSingleton<IDatabaseService, DatabaseService>();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ISaleRepository, SaleRepository>();
+        services.AddScoped<ISaleRepositoryFacade, SaleRepositoryFacade>();
         
         services.AddScoped<IDateService, DateService>();
         services.AddScoped<ISaleFactory, SaleFactory>();

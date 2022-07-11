@@ -37,7 +37,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
 
                     b.HasData(
                         new
@@ -117,7 +117,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
 
                     b.HasData(
                         new
@@ -201,7 +201,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -416,7 +416,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Sales");
+                    b.ToTable("Sales", (string)null);
 
                     b.HasData(
                         new
@@ -493,7 +493,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("SaleProduct");
+                    b.ToTable("SaleProduct", (string)null);
 
                     b.HasData(
                         new

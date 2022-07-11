@@ -1,26 +1,16 @@
-﻿using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Interfaces.Persistence;
 
 namespace Application.Sales.Queries.GetSalesDetail;
 
 public class GetSaleDetailQuery : IGetSaleDetailQuery
 {
-    private readonly IDatabaseService _database;
+    private readonly ISaleRepository _repository;
 
-    public GetSaleDetailQuery(IDatabaseService database)
-    {
-        _database = database;
-    }
+    public GetSaleDetailQuery(ISaleRepository repository) => _repository = repository;
 
     public async Task<SaleDetailModel> Execute(int id)
     {
-        // var sales = await _database.Sales.GetAll();
-        //     var projectedSales = await sales.Include(s => s.Customer)
-        //     .Include(s => s.Employee)
-        //     .Include(s => s.SaleProducts)
-        //     .ThenInclude(s => s.Product)
-        //     .ToListAsync();
-        var sale = await _database.Sales.Get(id);
+        var sale = await _repository.Get(id);
 
         return new SaleDetailModel()
         {

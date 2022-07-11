@@ -1,20 +1,16 @@
-﻿using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Interfaces.Persistence;
 
 namespace Application.Products.Queries.GetProductsList;
 
 public class GetProductsListQuery : IGetProductsListQuery
 {
-    private readonly IDatabaseService _database;
+    private readonly IProductRepository _repository;
 
-    public GetProductsListQuery(IDatabaseService database)
-    {
-        _database = database;
-    }
+    public GetProductsListQuery(IProductRepository repository) => _repository = repository;
 
     public async Task<List<ProductListModel>> Execute()
     {
-        var products = await _database.Products.GetAll();
+        var products = await _repository.GetAll();
 
         return products.Select(p => new ProductListModel
         {

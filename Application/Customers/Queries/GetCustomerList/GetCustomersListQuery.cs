@@ -1,20 +1,18 @@
 ﻿using Application.Interfaces;
+using Application.Interfaces.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Customers.Queries.GetCustomerList;
 
 public class GetCustomersListQuery : IGetCustomersListQuery
 {
-    private readonly IDatabaseService _database;
+    private readonly ICustomerRepository _repository;
 
-    public GetCustomersListQuery(IDatabaseService database)
-    {
-        _database = database;
-    }
+    public GetCustomersListQuery(ICustomerRepository repository) => _repository = repository;
 
     public async Task<List<CustomerModel>> Execute()
     {
-        var customers = await _database.Customers.GetAll();
+        var customers = await _repository.GetAll();
 
         return customers.Select(p => new CustomerModel()
                 {

@@ -4,32 +4,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Database;
 
-public class Repository<T> : IRepository<T> where T : class
+public abstract class Repository<T> : IRepository<T> where T : class
 {
-    private readonly DbSet<T> _dbSet;
+    protected readonly DbSet<T> DbSet;
 
-    public Repository(DbSet<T> dbSet)
+    protected Repository(DbSet<T> dbSet)
     {
-        _dbSet = dbSet;
+        DbSet = dbSet;
     }
 
     public Task<IQueryable<T>> GetAll()
     {
-        return Task.FromResult<IQueryable<T>>(_dbSet);
+        return Task.FromResult<IQueryable<T>>(DbSet);
     }
 
-    public async Task<T> Get(int id)
+    public virtual async Task<T> Get(int id)
     {
-        return await _dbSet.FindAsync(id);
+        return await DbSet.FindAsync(id);
     }
 
     public async Task AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
+        await DbSet.AddAsync(entity);
     }
 
     public Task RemoveAsync(T entity)
     {
-        return Task.FromResult(_dbSet.Remove(entity));
+        return Task.FromResult(DbSet.Remove(entity));
     }
 }

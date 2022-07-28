@@ -20,7 +20,7 @@ public class GetSalesListQuery : IGetSalesListQuery
 
         return (from sale in sales
             let products = sale.SaleProducts.Select(s => s.Product.Name).ToList()
-            let totalPrice = sale.SaleProducts.Sum(s => s.Product.Price)
+            let totalPrice = sale.SaleProducts.Sum(s => s.Product.Price * s.Quantity)
             select new SalesListItemModel()
             {
                 Id = sale.Id,

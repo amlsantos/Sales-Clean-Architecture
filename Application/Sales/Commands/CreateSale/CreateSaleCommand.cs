@@ -38,6 +38,8 @@ public class CreateSaleCommand : ICreateSaleCommand
 
         await _database.Sales.AddAsync(sale);
         await _database.SaveAsync();
+        
+        sale.SaleProducts.ForEach(sp => _inventory.NotifySaleOcurred(sp.ProductId, sp.Quantity));
     }
 
     private List<SaleProduct> ToSalesProducts(List<Product> products, List<ProductModel> productsModel)

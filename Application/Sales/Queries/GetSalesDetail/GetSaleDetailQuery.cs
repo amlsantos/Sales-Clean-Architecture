@@ -37,7 +37,7 @@ public class GetSaleDetailQuery : IGetSaleDetailQuery
                 Quantity = sp.Quantity
             }).ToList(),
             TotalQuantity = sale.SaleProducts.Sum(sp => sp.Quantity),
-            TotalPrice = sale.SaleProducts.Sum(sp => sp.Product.Price),
+            TotalPrice = sale.SaleProducts.Sum(sp => sp.Product.Price * sp.Quantity),
         };
     }
 }

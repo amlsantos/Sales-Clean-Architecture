@@ -15,7 +15,7 @@ public class ProductsController : Controller
         _command = command;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<ViewResult> Index()
     {
         var products = await _query.Execute();
         return View(products);
@@ -27,6 +27,6 @@ public class ProductsController : Controller
     public async Task<IActionResult> Create(CreateProductModel model)
     {
         await _command.Execute(model);
-        return RedirectToAction("Index");
+        return RedirectToAction("Index", "Products");
     }
 }

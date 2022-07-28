@@ -21,7 +21,7 @@ public class DatabaseService : DbContext, IDatabaseService
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData4";
+        const string connectionString = "Data Source= (localdb)\\MSSQLLocalDB; Initial Catalog=SalesAppData";
         optionsBuilder.UseSqlServer(connectionString);
     }
 

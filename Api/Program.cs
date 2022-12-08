@@ -1,28 +1,11 @@
 using System.Text.Json.Serialization;
 using Api.Utils;
-using Application.Customers.Commands.CreateCustomer;
-using Application.Customers.Queries.GetCustomerList;
-using Application.Employees.Commands.CreateEmployee;
-using Application.Employees.Queries.GetEmployeeList;
-using Application.Interfaces;
-using Application.Interfaces.Infrastructure;
-using Application.Interfaces.Persistence;
-using Application.Products.Commands.CreateProduct;
-using Application.Products.Queries.GetProductsList;
-using Application.Sales.Commands.CreateSale;
-using Application.Sales.Commands.CreateSale.Factory;
-using Application.Sales.Commands.CreateSale.Repository;
-using Application.Sales.Queries.GetSalesDetail;
-using Application.Sales.Queries.GetSalesList;
-using Common.Dates;
-using Infrastructure.InventoryService;
-using Infrastructure.Network;
+using Application.Configuration;
+using Common.Configuration;
+using Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Customers;
+using Persistence.Configuration;
 using Persistence.Database;
-using Persistence.Employees;
-using Persistence.Products;
-using Persistence.Sales;
 
 namespace Api;
 
@@ -64,30 +47,10 @@ public static class Program
 
     private static void ConfigureDi(IServiceCollection services)
     {
-        services.AddSingleton<IDatabaseContext, DatabaseContext>();
-
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ICustomerRepository, CustomerRepository>();
-        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
-        services.AddScoped<ISaleRepository, SaleRepository>();
-        services.AddScoped<ISaleRepositoryFacade, SaleRepositoryFacade>();
-
-        services.AddScoped<IDateService, DateService>();
-        services.AddScoped<ISaleFactory, SaleFactory>();
-        services.AddScoped<IInventoryService, InventoryService>();
-        services.AddScoped<IWebClientWrapper, WebClientWrapper>();
-        
-        services.AddScoped<IGetCustomersListQuery, GetCustomersListQuery>();
-        services.AddScoped<IGetEmployeesListQuery, GetEmployeesListQuery>();
-        services.AddScoped<IGetProductsListQuery, GetProductsListQuery>();
-        services.AddScoped<IGetSalesListQuery, GetSalesListQuery>();
-        services.AddScoped<IGetSaleDetailQuery, GetSaleDetailQuery>();
-        
-        services.AddScoped<ICreateSaleCommand, CreateSaleCommand>();
-        services.AddScoped<ICreateCustomerCommand, CreateCustomerCommand>();
-        services.AddScoped<ICreateEmployeeCommand, CreateEmployeeCommand>();
-        services.AddScoped<ICreateProductCommand, CreateProductCommand>();
+        services.AddPersistence();
+        services.AddApplication();
+        services.AddInfrastructure();
+        services.AddCommon();
     }
 
     private static void RunMigrations(WebApplication app)

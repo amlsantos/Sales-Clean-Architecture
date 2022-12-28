@@ -19,16 +19,18 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<CustomerModel>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await _query.Execute();
+        var response = await _query.Execute();
+
+        return Ok(response);
     }
 
     [HttpPost]
-    public async Task<HttpResponseMessage> Create(CreateCustomerModel model)
+    public async Task<IActionResult> Create(CreateCustomerModel model)
     {
         await _command.Execute(model);
-        
-        return new HttpResponseMessage(HttpStatusCode.Created);
+
+        return Created(model.Name, model);
     }
 }

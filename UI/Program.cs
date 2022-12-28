@@ -36,6 +36,7 @@ public static class Program
 
     private static void ConfigureDi(IServiceCollection services)
     {
+        services.AddUi();
         services.AddPersistence();
         services.AddApplication();
         services.AddInfrastructure();

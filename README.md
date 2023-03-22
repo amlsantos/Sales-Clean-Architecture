@@ -1,3 +1,6 @@
+![build](https://github.com/santos-an/Sales-Clean-Architecture/actions/workflows/build.yml/badge.svg)
+![test](https://github.com/santos-an/Sales-Clean-Architecture/actions/workflows/test.yml/badge.svg)
+
 # Clean Architecture Demo - Sales App
 A sample application for [Clean Architecture: Patterns, Practices, and Principles](https://pluralsight.pxf.io/clean-architecture) using Microsoft .NET 6. 
 The same course is available [here](https://github.com/matthewrenze/clean-architecture-demo/). 
